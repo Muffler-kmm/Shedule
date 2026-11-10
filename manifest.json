@@ -1,0 +1,25 @@
+{
+  "id": "/Shedule/",
+  "name": "Расписание СКТЭК",
+  "short_name": "СКТЭК",
+  "description": "Учебное расписание ГБПОУ СКТЭК",
+  "lang": "ru",
+  "start_url": "/Shedule/",
+  "scope": "/Shedule/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "icons": [
+    {
+      "src": "/Shedule/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Shedule/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
