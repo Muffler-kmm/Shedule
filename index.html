@@ -188,6 +188,18 @@ let lastLocalDate = toInputDate(new Date());
 const pageNames = {home:"Главная",teachers:"Преподаватели",groups:"Учебные группы",schedule:"Расписание"};
 function openPage(pageId) { document.querySelectorAll(".page").forEach(page=>page.classList.remove("active")); document.getElementById(pageId).classList.add("active"); document.getElementById("footerPage").textContent=pageNames[pageId]||"Расписание"; window.scrollTo({top:0,behavior:"smooth"}); }
 function goBack(){openPage(previousPage);}
+function openSchedule(name, type, sourcePage) {
+    previousPage = sourcePage;
+    selectedName = name;
+    selectedType = type;
+
+    activeWeek = getWeekNumber(selectedDate);
+
+    document.getElementById("scheduleTitle").textContent = name;
+    updateScheduleFavorite();
+    renderSchedule();
+    openPage("schedule");
+}
 function saveFavorites(){localStorage.setItem("scheduleFavorites",JSON.stringify(favorites));}
 function isFavorite(name,type){return favorites.some(item=>item.id===type+":"+name);}
 function toggleFavorite(name,type){const id=type+":"+name;const index=favorites.findIndex(item=>item.id===id);if(index===-1)favorites.push({id,name,type});else favorites.splice(index,1);saveFavorites();renderLists();updateScheduleFavorite();}
