@@ -209,6 +209,7 @@ document.getElementById("datePicker").addEventListener("change",function(){
     selectedDate=new Date(year,month-1,day);
     activeWeek=getWeekNumber(selectedDate);
     renderSchedule();
+});
 function refreshTodayIfNeeded(){
     const today = new Date();
     const todayKey = toInputDate(today);
