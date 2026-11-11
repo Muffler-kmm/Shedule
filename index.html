@@ -304,7 +304,35 @@ function refreshTodayIfNeeded() {
 function getGroupLessons(groupName,week,day){const group=DATA.groups.find(item=>item.name===groupName);if(!group)return [];const dayLessons=group.weeks[week-1]?.[day-1]||[];return dayLessons.map((lesson,index)=>lesson?{time:times[index],group:groupName,subject:lesson.subject,teacher:lesson.teacher}:null).filter(Boolean);}
 function getTeacherLessons(teacherName,week,day){if(teacherName.toLocaleLowerCase('ru-RU').includes('ваканс'))return [];if(teacherName==="Картоев М. М."){return (DATA.kartoev[week-1]?.[day-1]||[]).map((lesson,index)=>({time:times[index],group:lesson[0],subject:lesson[1],teacher:teacherName}));}const result=[];for(const group of DATA.groups){for(const lesson of getGroupLessons(group.name,week,day)){if(lesson.teacher===teacherName)result.push(lesson);}}return result;}
 function getFilteredLessons(week,day){const result=selectedType==="teacher"?getTeacherLessons(selectedName,week,day):getGroupLessons(selectedName,week,day);return result.sort((a,b)=>times.indexOf(a.time)-times.indexOf(b.time));}
-function renderSchedule(){document.getElementById("week1").classList.toggle("active",activeWeek===1);document.getElementById("week2").classList.toggle("active",activeWeek===2);const daysContainer=document.getElementById("days"),note=document.getElementById("scheduleNote");daysContainer.innerHTML="";const monday=getMonday(selectedDate);for(let i=0;i<5;i++){const currentDate=new Date(monday);currentDate.setDate(monday.getDate()+i);const dayCard=document.createElement("div");dayCard.className="day-card";if(currentDate.getDate()===selectedDate.getDate()&&currentDate.getMonth()===selectedDate.getMonth()&&currentDate.getFullYear()===selectedDate.getFullYear())dayCard.classList.add("selected-day");const dayHeader=document.createElement("div");dayHeader.className="day-header";const dayTitle=document.createElement("h3");dayTitle.textContent=dayNames[i];const dayDate=document.createElement("span");dayDate.textContent=formatDate(currentDate);dayHeader.append(dayTitle,dayDate);dayCard.appendChild(dayHeader);const dayLessons=getFilteredLessons(activeWeek,i+1);if(!dayLessons.length){const empty=document.createElement("div");empty.className="no-lessons";empty.textContent="Занятий нет";dayCard.appendChild(empty);}else{dayLessons.forEach(lesson=>{const lessonCard=document.createElement("div");lessonCard.className="lesson";const time=document.createElement("div");time.className="lesson-time";time.textContent=`${times.indexOf(lesson.time)+1}-я пара · ${lesson.time}`;const details=document.createElement("div");const mainInfo=document.createElement("div");mainInfo.className="lesson-group";mainInfo.textContent=selectedType==="teacher"?lesson.group:lesson.subject;const subject=document.createElement("div");subject.className="lesson-subject";subject.textContent=selectedType==="teacher"?lesson.subject:`Группа: ${lesson.group}`;details.append(mainInfo,subject);if(selectedType==="group"){const teacher=document.createElement("div");teacher.className="lesson-teacher";teacher.textContent=lesson.teacher&&lesson.teacher.toLocaleLowerCase('ru-RU').includes('ваканс')?'Преподаватель: Вакансия ин. яз':`Преподаватель: ${lesson.teacher||'Не указан'}`;details.appendChild(teacher);}lessonCard.append(time,details);dayCard.appendChild(lessonCard);});}daysContainer.appendChild(dayCard);}note.textContent=selectedType==="group"?"В расписании группы показаны предметы и преподаватели согласно загруженному расписанию.":"В расписании преподавателя показаны его занятия и соответствующие учебные группы.";}
+
+function isCurrentLesson(time, date) {
+    const today = new Date();
+
+    if (
+        date.getDate() !== today.getDate() ||
+        date.getMonth() !== today.getMonth() ||
+        date.getFullYear() !== today.getFullYear()
+    ) {
+        return false;
+    }
+
+    const [start, end] = time.split("–");
+
+    function toMinutes(value) {
+        const [hours, minutes] = value.trim().split(":").map(Number);
+        return hours * 60 + minutes;
+    }
+
+    const now = today.getHours() * 60 + today.getMinutes();
+
+    return now >= toMinutes(start) && now < toMinutes(end);
+}
+
+function renderSchedule(){document.getElementById("week1").classList.toggle("active",activeWeek===1);document.getElementById("week2").classList.toggle("active",activeWeek===2);const daysContainer=document.getElementById("days"),note=document.getElementById("scheduleNote");daysContainer.innerHTML="";const monday=getMonday(selectedDate);for(let i=0;i<5;i++){const currentDate=new Date(monday);currentDate.setDate(monday.getDate()+i);const dayCard=document.createElement("div");dayCard.className="day-card";if(currentDate.getDate()===selectedDate.getDate()&&currentDate.getMonth()===selectedDate.getMonth()&&currentDate.getFullYear()===selectedDate.getFullYear())dayCard.classList.add("selected-day");const dayHeader=document.createElement("div");dayHeader.className="day-header";const dayTitle=document.createElement("h3");dayTitle.textContent=dayNames[i];const dayDate=document.createElement("span");dayDate.textContent=formatDate(currentDate);dayHeader.append(dayTitle,dayDate);dayCard.appendChild(dayHeader);const dayLessons=getFilteredLessons(activeWeek,i+1);if(!dayLessons.length){const empty=document.createElement("div");empty.className="no-lessons";empty.textContent="Занятий нет";dayCard.appendChild(empty);}else{dayLessons.forEach(lesson=>{const lessonCard=document.createElement("div");lessonCard.className = "lesson";
+
+if (isCurrentLesson(lesson.time, currentDate)) {
+    lessonCard.classList.add("current-lesson");
+}; const time=document.createElement("div");time.className="lesson-time";time.textContent=`${times.indexOf(lesson.time)+1}-я пара · ${lesson.time}`;const details=document.createElement("div");const mainInfo=document.createElement("div");mainInfo.className="lesson-group";mainInfo.textContent=selectedType==="teacher"?lesson.group:lesson.subject;const subject=document.createElement("div");subject.className="lesson-subject";subject.textContent=selectedType==="teacher"?lesson.subject:`Группа: ${lesson.group}`;details.append(mainInfo,subject);if(selectedType==="group"){const teacher=document.createElement("div");teacher.className="lesson-teacher";teacher.textContent=lesson.teacher&&lesson.teacher.toLocaleLowerCase('ru-RU').includes('ваканс')?'Преподаватель: Вакансия ин. яз':`Преподаватель: ${lesson.teacher||'Не указан'}`;details.appendChild(teacher);}lessonCard.append(time,details);dayCard.appendChild(lessonCard);});}daysContainer.appendChild(dayCard);}note.textContent=selectedType==="group"?"В расписании группы показаны предметы и преподаватели согласно загруженному расписанию.":"В расписании преподавателя показаны его занятия и соответствующие учебные группы.";}
 renderLists();document.getElementById("globalSearch").addEventListener("input",renderSearch);document.getElementById("scheduleFavorite").addEventListener("click",()=>toggleFavorite(selectedName,selectedType));document.getElementById("datePicker").value=toInputDate(selectedDate);
 </script> 
 <script>
