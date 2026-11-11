@@ -1,0 +1,716 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расписание колледжа</title>
+
+<style>
+:root {
+    --bg: #090f1d;
+    --panel: #131e32;
+    --line: #293954;
+    --text: #f2f6ff;
+    --muted: #9aabc5;
+    --blue: #2585ff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at 80% 0%, #17345b, transparent 34%),
+        linear-gradient(135deg, #080d19, #0c1526);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+/* ОСНОВНАЯ СТРУКТУРА */
+
+.layout {
+    display: grid;
+    grid-template-columns: 225px minmax(0, 1fr);
+    min-height: 100vh;
+    max-width: 1450px;
+    margin: auto;
+}
+
+/* БОКОВОЕ МЕНЮ */
+
+.sidebar {
+    background: #0c1424;
+    border-right: 1px solid var(--line);
+    padding: 28px 17px;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 9px 42px;
+}
+
+.logo {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #2585ff, #1552bd);
+    font-size: 20px;
+}
+
+.brand small {
+    display: block;
+    color: var(--muted);
+    font-weight: normal;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.nav {
+    display: grid;
+    gap: 9px;
+}
+
+.nav button {
+    border: 1px solid transparent;
+    background: none;
+    color: #a9b8d0;
+    text-align: left;
+    padding: 13px;
+    border-radius: 11px;
+}
+
+.nav button.active {
+    background: linear-gradient(110deg, #155cc7, #17488f);
+    border-color: #318dff;
+    color: white;
+}
+
+.side-bottom {
+    margin-top: auto;
+    color: #8192ae;
+    font-size: 12px;
+    padding: 15px 10px;
+}
+
+/* ОСНОВНАЯ ОБЛАСТЬ */
+
+main {
+    max-width: 1150px;
+    width: 100%;
+    margin: auto;
+    padding: 42px clamp(18px, 4vw, 55px);
+    min-width: 0;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    color: #60b3ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: clamp(28px, 4vw, 38px);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.date {
+    padding: 12px 15px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #141f34;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* НЕДЕЛИ */
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    gap: 12px;
+}
+
+.segment {
+    display: flex;
+    padding: 4px;
+    border: 1px solid var(--line);
+    background: #111a2c;
+    border-radius: 12px;
+}
+
+.segment button {
+    border: 0;
+    background: none;
+    color: #9eafca;
+    padding: 10px 20px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.segment button.active {
+    background: linear-gradient(135deg, #2585ff, #1763d1);
+    color: white;
+}
+
+.arrows {
+    display: flex;
+    gap: 8px;
+}
+
+.arrows button {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #131e32;
+    color: white;
+}
+
+/* ДНИ НЕДЕЛИ */
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 9px;
+    margin-bottom: 22px;
+}
+
+.day {
+    min-width: 0;
+    border: 1px solid #273650;
+    background: #141e31;
+    border-radius: 12px;
+    color: #aebdd4;
+    padding: 13px 6px;
+    min-height: 70px;
+}
+
+.day b {
+    display: block;
+    color: #e7efff;
+    margin-bottom: 6px;
+}
+
+.day.active {
+    background: linear-gradient(150deg, #1677ed, #174da7);
+    border-color: #3695ff;
+    color: white;
+}
+
+/* ЗАГОЛОВОК ДНЯ */
+
+.day-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 13px;
+}
+
+.day-heading h2 {
+    font-size: 17px;
+}
+
+.day-heading span {
+    font-size: 12px;
+    color: #8fa2bf;
+}
+
+/* КАРТОЧКИ ПАР */
+
+.lessons {
+    display: grid;
+    gap: 11px;
+}
+
+.lesson {
+    display: grid;
+    grid-template-columns: 90px 4px minmax(0, 1fr) 30px;
+    gap: 16px;
+    align-items: center;
+    background: linear-gradient(110deg, #151f33, #111a2c);
+    border: 1px solid #26344d;
+    border-radius: 14px;
+    padding: 16px 17px;
+    min-width: 0;
+}
+
+.time {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.55;
+    white-space: nowrap;
+}
+
+.time small {
+    display: block;
+    color: #8799b5;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.bar {
+    height: 42px;
+    border-radius: 5px;
+    background: linear-gradient(#56b2ff, #1674ed);
+}
+
+.details {
+    min-width: 0;
+}
+
+.subject {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+}
+
+.teacher {
+    font-size: 12px;
+    color: #9aabc5;
+}
+
+.star {
+    border: 0;
+    background: none;
+    color: #8295b4;
+    font-size: 23px;
+}
+
+.star.selected {
+    color: #ffd36a;
+}
+
+.empty {
+    display: none;
+    border: 1px dashed #34445e;
+    border-radius: 14px;
+    padding: 25px;
+    text-align: center;
+    color: var(--muted);
+}
+
+footer {
+    text-align: center;
+    color: #6f819d;
+    font-size: 11px;
+    margin-top: 30px;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ */
+
+@media (max-width: 760px) {
+
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 12px 14px 10px;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+        padding: 0 3px 12px;
+        font-size: 14px;
+    }
+
+    .logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .nav {
+        display: flex;
+        gap: 7px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    .nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav button {
+        flex: 0 0 auto;
+        padding: 10px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .side-bottom {
+        display: none;
+    }
+
+    main {
+        padding: 25px 14px 35px;
+    }
+
+    .top {
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 23px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .date {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .controls {
+        margin-bottom: 17px;
+    }
+
+    .segment button {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .arrows button {
+        width: 35px;
+        height: 35px;
+    }
+
+    .days {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 5px;
+        margin-bottom: 20px;
+    }
+
+    .day {
+        min-height: 60px;
+        padding: 10px 2px;
+        font-size: 11px;
+        border-radius: 10px;
+    }
+
+    .day b {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .day-heading h2 {
+        font-size: 16px;
+    }
+
+    .day-heading span {
+        font-size: 11px;
+    }
+
+    /* Компактная карточка пары */
+
+    .lessons {
+        gap: 10px;
+    }
+
+    .lesson {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 30px;
+        gap: 8px 10px;
+        padding: 14px 13px;
+        border-radius: 12px;
+    }
+
+    .time {
+        grid-column: 1;
+        grid-row: 1;
+        font-size: 13px;
+        color: #7fc2ff;
+    }
+
+    .time small {
+        display: inline;
+        margin-left: 7px;
+        font-size: 12px;
+    }
+
+    .bar {
+        display: none;
+    }
+
+    .details {
+        grid-column: 1;
+        grid-row: 2;
+        padding-left: 10px;
+        border-left: 3px solid #2585ff;
+    }
+
+    .subject {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 4px;
+    }
+
+    .teacher {
+        font-size: 11px;
+    }
+
+    .star {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: center;
+        font-size: 22px;
+        padding: 5px;
+    }
+
+    footer {
+        margin-top: 22px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    main {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .date {
+        max-width: 115px;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .days {
+        gap: 4px;
+    }
+
+    .day {
+        font-size: 10px;
+    }
+
+    .lesson {
+        padding: 12px 11px;
+    }
+
+    .segment button {
+        padding: 9px 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <span class="logo">▣</span>
+        <span>
+            КОЛЛЕДЖ
+            <small>Учебный портал</small>
+        </span>
+    </div>
+
+    <nav>
+        <button class="active">▦ &nbsp; Расписание</button>
+        <button>♙ &nbsp; Преподаватели</button>
+        <button>▤ &nbsp; Учебные группы</button>
+        <button>☆ &nbsp; Избранное</button>
+    </nav>
+
+    <div class="side-bottom">
+        © 2026 · Учебное расписание
+    </div>
+
+</aside>
+
+<main>
+
+    <div class="top">
+        <div>
+            <div class="eyebrow">Учебный портал</div>
+            <h1>Расписание</h1>
+            <p class="subtitle">Актуальное расписание занятий</p>
+        </div>
+
+        <div class="date">▣ &nbsp; 4 — 10 ноября</div>
+    </div>
+
+    <div class="controls">
+        <div class="segment">
+            <button class="active">1 неделя</button>
+            <button>2 неделя</button>
+        </div>
+
+        <div class="arrows">
+            <button>‹</button>
+            <button>›</button>
+        </div>
+    </div>
+
+    <div class="days">
+        <button class="day active"><b>Пн</b>4.11</button>
+        <button class="day"><b>Вт</b>5.11</button>
+        <button class="day"><b>Ср</b>6.11</button>
+        <button class="day"><b>Чт</b>7.11</button>
+        <button class="day"><b>Пт</b>8.11</button>
+        <button class="day"><b>Сб</b>9.11</button>
+    </div>
+
+    <div class="day-heading">
+        <h2 id="dayTitle">Понедельник</h2>
+        <span id="dayCount">4 ноября · 4 пары</span>
+    </div>
+
+    <div class="lessons" id="lessons">
+
+        <article class="lesson">
+            <div class="time">08:30<small>10:10</small></div>
+            <div class="bar"></div>
+            <div class="details">
+                <div class="subject">Охрана труда</div>
+                <div class="teacher">Иванов А.В.</div>
+            </div>
+            <button class="star">☆</button>
+        </article>
+
+        <article class="lesson">
+            <div class="time">10:20<small>12:00</small></div>
+            <div class="bar"></div>
+            <div class="details">
+                <div class="subject">Физическая культура</div>
+                <div class="teacher">Петров С.М.</div>
+            </div>
+            <button class="star">☆</button>
+        </article>
+
+        <article class="lesson">
+            <div class="time">12:30<small>14:10</small></div>
+            <div class="bar"></div>
+            <div class="details">
+                <div class="subject">Экономика</div>
+                <div class="teacher">Сидорова Е.Н.</div>
+            </div>
+            <button class="star">☆</button>
+        </article>
+
+        <article class="lesson">
+            <div class="time">14:20<small>16:00</small></div>
+            <div class="bar"></div>
+            <div class="details">
+                <div class="subject">Информатика</div>
+                <div class="teacher">Кузнецов Д.А.</div>
+            </div>
+            <button class="star">☆</button>
+        </article>
+
+    </div>
+
+    <div class="empty" id="empty">
+        На выбранный день занятий нет.
+    </div>
+
+    <footer>
+        Предварительный просмотр дизайна
+    </footer>
+
+</main>
+</div>
+
+<script>
+const dayNames = [
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота"
+];
+
+document.querySelectorAll(".day").forEach((button, index) => {
+    button.addEventListener("click", () => {
+
+        document.querySelectorAll(".day").forEach(day => {
+            day.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        document.getElementById("dayTitle").textContent =
+            dayNames[index];
+
+        document.getElementById("dayCount").textContent =
+            index === 0 ? "4 ноября · 4 пары" : "Демонстрационный просмотр";
+
+        document.getElementById("lessons").style.display =
+            index === 0 ? "grid" : "none";
+
+        document.getElementById("empty").style.display =
+            index === 0 ? "none" : "block";
+    });
+});
+
+document.querySelectorAll(".segment button").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".segment button").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+    });
+});
+
+document.querySelectorAll(".star").forEach(button => {
+    button.addEventListener("click", () => {
+        button.classList.toggle("selected");
+
+        button.textContent =
+            button.classList.contains("selected") ? "★" : "☆";
+    });
+});
+</script>
+
+</body>
+</html>
