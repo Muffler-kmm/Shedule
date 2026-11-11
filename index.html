@@ -161,7 +161,11 @@ footer .footer-page { color: #9bb1ca; margin-bottom: 7px; }
 <section id="schedule" class="page">
     <button class="back" onclick="goBack()">← Назад</button>
     <div class="schedule-heading"><h1 id="scheduleTitle"></h1><button type="button" class="favorite-btn" id="scheduleFavorite" aria-label="Добавить в избранное" title="Добавить в избранное">☆</button></div>
-    <div class="schedule-date"><label for="datePicker">Дата:</label><input type="date" id="datePicker"></div>
+  <div class="schedule-date">
+    <label for="datePicker">Дата:</label>
+    <input type="date" id="datePicker">
+    <button type="button" class="week-btn" id="todayButton">Сегодня</button>
+  </div>
     <div class="week-switch"><button class="week-btn" id="week1" onclick="switchWeek(1)">Первая неделя</button><button class="week-btn" id="week2" onclick="switchWeek(2)">Вторая неделя</button></div>
     <div id="days" class="days"></div><p class="schedule-note" id="scheduleNote"></p>
 </section>
