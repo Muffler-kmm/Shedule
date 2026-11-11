@@ -4,143 +4,378 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#081321">
+<meta name="theme-color" content="#071426">
 <title>Расписание СКТЭК</title>
 
 <style>
 :root {
-    --bg: #081321;
-    --panel: #111f31;
-    --panel2: #172a40;
-    --line: rgba(255,255,255,.09);
-    --text: #f3f7fc;
-    --muted: #91a4ba;
-    --blue: #69baff;
-    --green: #55d69b;
+    --bg: #071426;
+    --panel: #101f32;
+    --panel2: #142840;
+    --border: rgba(145, 181, 218, .13);
+    --text: #eef5ff;
+    --muted: #91a5bc;
+    --blue: #65b8ff;
+    --green: #54d69a;
     --gold: #ffd477;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
     min-height: 100vh;
+    font-family: Arial, sans-serif;
     color: var(--text);
     background:
-        radial-gradient(ellipse at 50% -20%, #1b4166 0, transparent 55%),
-        var(--bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        radial-gradient(ellipse at 15% 0%, #17385d 0, transparent 38%),
+        linear-gradient(135deg, #071426, #0b1b30 55%, #071426);
 }
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+
 header {
-    height: 72px;
-    padding: 0 max(20px, calc((100% - 1120px)/2));
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    min-height: 74px;
+    padding: 15px max(5%, calc((100% - 1250px)/2));
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--line);
-    background: rgba(8,19,33,.88);
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    backdrop-filter: blur(16px);
+    gap: 15px;
+    background: rgba(7, 20, 38, .88);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(18px);
 }
-.logo { display:flex; align-items:center; gap:11px; font-size:15px; font-weight:800; }
-.logo img { width:39px; height:39px; border-radius:10px; object-fit:contain; }
-.logo b { color:var(--blue); }
-.header-caption { color:var(--muted); font-size:12px; }
-main { max-width:1120px; min-height:calc(100vh - 140px); margin:auto; padding:42px 22px 65px; }
-.page { display:none; }
-.page.active { display:block; animation:appear .22s ease; }
-@keyframes appear { from {opacity:0; transform:translateY(5px)} to {opacity:1; transform:none} }
-.eyebrow { color:var(--blue); font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
-h1 { font-size:clamp(29px,5vw,43px); letter-spacing:-1px; margin-bottom:12px; }
-h2 { font-size:18px; margin-bottom:17px; }
-.intro { color:var(--muted); font-size:14px; line-height:1.7; max-width:650px; }
-.hero { margin-bottom:30px; }
-.search { position:relative; margin:28px 0 32px; }
-.search input {
-    width:100%; height:54px; padding:0 18px 0 48px;
-    border:1px solid var(--line); border-radius:14px;
-    background:var(--panel); color:var(--text); font-size:14px; outline:none;
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: .6px;
 }
-.search input:focus { border-color:var(--blue); box-shadow:0 0 0 3px #69baff18; }
-.search-icon { position:absolute; left:17px; top:15px; color:var(--blue); font-size:21px; }
-.search-results { display:grid; gap:7px; margin-top:8px; }
+
+.logo img {
+    width: 39px;
+    height: 39px;
+    border-radius: 11px;
+    object-fit: cover;
+}
+
+.logo span { color: var(--blue); }
+.header-info { color: var(--muted); font-size: 13px; }
+
+main {
+    max-width: 1250px;
+    min-height: calc(100vh - 160px);
+    margin: auto;
+    padding: 48px 25px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+.welcome { margin-bottom: 32px; }
+.subtitle {
+    color: var(--blue);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 13px;
+}
+.welcome h1 {
+    font-size: clamp(29px, 5vw, 43px);
+    margin-bottom: 12px;
+}
+.welcome p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 17px;
+}
+
+.search-section { margin-bottom: 32px; }
+.search-wrap { position: relative; }
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 17px;
+    transform: translateY(-50%);
+    color: var(--blue);
+    font-size: 21px;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 17px 18px 17px 48px;
+    color: var(--text);
+    background: rgba(20, 40, 64, .9);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+}
+.search-input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(101,184,255,.09);
+}
+.search-input::placeholder { color: #8299b4; }
+
+.search-results {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
 .search-result {
-    display:flex; justify-content:space-between; gap:10px; width:100%;
-    padding:14px 16px; border:1px solid var(--line); border-radius:11px;
-    background:var(--panel); color:var(--text); text-align:left; cursor:pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 17px;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    text-align: left;
 }
-.search-result span { color:var(--blue); font-size:12px; }
-.menu { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; }
+.search-result:hover { border-color: var(--blue); }
+.search-result span { color: var(--blue); font-size: 12px; }
+.search-empty, .empty {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 12px 4px;
+}
+
+.favorite-section { margin-bottom: 32px; }
+.favorite-section .section-title span { color: var(--gold); }
+
+.menu, .items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
 .menu-card {
-    min-height:150px; padding:23px; border:1px solid var(--line);
-    border-radius:17px; background:linear-gradient(145deg,#172d45,#101e30);
-    color:var(--text); text-align:left; cursor:pointer; transition:.2s;
+    min-height: 155px;
+    padding: 24px;
+    color: var(--text);
+    text-align: left;
+    background: linear-gradient(145deg, #192f4a, #101f32);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    transition: .2s;
 }
-.menu-card:hover,.item:hover { border-color:#69baff77; transform:translateY(-2px); }
+.menu-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(101,184,255,.5);
+}
 .menu-icon {
-    width:43px; height:43px; display:grid; place-items:center;
-    margin-bottom:17px; border-radius:13px; background:#69baff19;
-    color:var(--blue); font-size:22px;
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 17px;
+    color: var(--blue);
+    background: rgba(101,184,255,.12);
+    border-radius: 13px;
+    font-size: 22px;
 }
-.menu-card h3 { font-size:16px; margin-bottom:8px; }
-.menu-card p { color:var(--muted); font-size:12px; line-height:1.6; }
-.items { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; }
+.menu-card h3 { margin-bottom: 8px; font-size: 17px; }
+.menu-card p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+.items { grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); }
+
 .item {
-    display:flex; align-items:center; gap:12px; padding:17px;
-    border:1px solid var(--line); border-radius:14px;
-    background:var(--panel); transition:.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 19px;
+    background: rgba(16,31,50,.88);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    transition: .2s;
 }
-.item-info { flex:1; min-width:0; cursor:pointer; }
-.item-info h3 { font-size:14px; margin-bottom:6px; }
-.item-info p { color:var(--muted); font-size:12px; }
-.star {
-    width:38px; height:38px; flex-shrink:0; border:1px solid var(--line);
-    border-radius:11px; background:var(--panel2); color:#8fa4bb;
-    font-size:21px; cursor:pointer;
+.item:hover { border-color: rgba(101,184,255,.45); }
+.item-info { flex: 1; min-width: 0; cursor: pointer; }
+.item-info h3 { font-size: 15px; margin-bottom: 8px; }
+.item-info p { color: var(--muted); font-size: 12px; }
+
+.developer {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 9px;
+    padding: 5px 8px;
+    color: var(--blue);
+    background: rgba(101,184,255,.1);
+    border: 1px solid rgba(101,184,255,.25);
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    white-space: nowrap;
 }
-.star.selected { color:var(--gold); }
-.back { margin-bottom:25px; border:0; background:none; color:var(--blue); font-size:14px; cursor:pointer; }
-.schedule-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:22px; }
-.schedule-heading h1 { font-size:clamp(24px,4vw,34px); margin:0; }
-.controls { display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-bottom:17px; }
-.controls label { color:var(--muted); font-size:13px; }
-.controls input { min-height:40px; padding:8px 11px; border:1px solid var(--line); border-radius:9px; background:var(--panel); color:white; color-scheme:dark; }
-.btn {
-    min-height:39px; padding:9px 14px; border:1px solid var(--line);
-    border-radius:9px; background:var(--panel); color:#b4c5d8;
-    font-size:12px; font-weight:650; cursor:pointer;
+
+.star, .favorite-btn {
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    color: #91a5bc;
+    background: rgba(101,184,255,.07);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    font-size: 21px;
 }
-.btn.active { background:#174c78; border-color:#318ee0; color:white; }
-.weeks { display:flex; gap:8px; margin-bottom:20px; }
-.weeks .btn { flex:1; max-width:170px; }
-.days { display:grid; gap:13px; }
-.day { overflow:hidden; border:1px solid var(--line); border-radius:15px; background:var(--panel); }
-.day.today { border-color:#69baff99; }
-.day-head { display:flex; justify-content:space-between; gap:10px; padding:16px 18px; background:var(--panel2); border-bottom:1px solid var(--line); }
-.day-head h3 { font-size:14px; }
-.day-head span { color:var(--muted); font-size:12px; }
-.lesson { display:grid; grid-template-columns:125px 1fr; gap:14px; padding:16px 18px; border-bottom:1px solid var(--line); }
-.lesson:last-child { border-bottom:0; }
-.lesson-time { color:var(--blue); font-size:13px; font-weight:700; }
-.lesson-main { font-size:13px; font-weight:650; margin-bottom:5px; }
-.lesson-sub { color:#a9bbcf; font-size:13px; line-height:1.5; }
-.lesson-teacher { color:var(--blue); font-size:12px; margin-top:7px; }
-.status { color:var(--green); font-size:11px; font-weight:750; margin-top:7px; }
-.empty { color:var(--muted); padding:17px 4px; font-size:13px; }
-.note { color:var(--muted); font-size:11px; line-height:1.6; margin-top:17px; }
-.loading { padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--panel); color:var(--muted); line-height:1.6; }
-.error { color:#ff9b9b; }
-footer { padding:22px 15px; border-top:1px solid var(--line); color:#71869e; text-align:center; font-size:11px; }
-footer div { margin-bottom:6px; color:#a4b8ce; }
-@media(max-width:650px) {
-    header { height:64px; padding:0 15px; }
-    .logo { font-size:12px; gap:8px; }
-    .logo img { width:34px; height:34px; }
-    .header-caption { display:none; }
-    main { padding:32px 16px 50px; }
-    .menu,.items { grid-template-columns:1fr; }
-    .lesson { grid-template-columns:1fr; gap:7px; padding:14px; }
-    .day-head { padding:14px; }
-    .weeks .btn { padding:9px 5px; font-size:11px; }
+.star.selected, .favorite-btn.selected {
+    color: var(--gold);
+    border-color: rgba(255,212,119,.4);
+    background: rgba(255,212,119,.1);
+}
+
+.back {
+    margin-bottom: 28px;
+    color: var(--blue);
+    background: none;
+    border: 0;
+    font-size: 14px;
+}
+
+.schedule-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+.schedule-heading h1 { font-size: clamp(24px, 4vw, 35px); }
+
+.schedule-date {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 23px;
+}
+.schedule-date label { color: var(--muted); font-size: 14px; }
+.schedule-date input {
+    padding: 11px 13px;
+    color: white;
+    color-scheme: dark;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+.week-switch { display: flex; gap: 10px; margin-bottom: 22px; }
+.week-btn {
+    padding: 11px 18px;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+.week-btn.active {
+    color: white;
+    background: #1c5b91;
+    border-color: var(--blue);
+}
+
+.days { display: grid; gap: 15px; }
+.day-card {
+    overflow: hidden;
+    background: rgba(16,31,50,.9);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+.day-card.selected-day {
+    border-color: var(--blue);
+    box-shadow: 0 0 18px rgba(88,174,240,.1);
+}
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 17px 20px;
+    background: rgba(39,76,113,.3);
+    border-bottom: 1px solid var(--border);
+}
+.day-header h3 { font-size: 15px; }
+.day-header span { color: var(--muted); font-size: 12px; }
+
+.lesson {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 15px;
+    padding: 17px 20px;
+    border-bottom: 1px solid rgba(145,181,218,.08);
+}
+.lesson:last-child { border-bottom: 0; }
+.lesson-time { color: var(--blue); font-size: 13px; font-weight: 700; }
+.lesson-group { color: #e0edff; font-size: 14px; margin-bottom: 6px; }
+.lesson-subject { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.lesson-teacher { color: var(--blue); font-size: 12px; margin-top: 7px; }
+
+.lesson-status {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.no-lessons { padding: 22px 20px; color: var(--muted); font-size: 13px; }
+.schedule-note { color: #8299b4; font-size: 12px; margin-top: 18px; }
+
+.loading, .error {
+    padding: 35px 20px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+}
+.error { color: #ff9b9b; }
+.retry {
+    margin-top: 15px;
+    padding: 10px 17px;
+    color: white;
+    background: #1c5b91;
+    border: 0;
+    border-radius: 9px;
+}
+
+footer {
+    padding: 25px 15px;
+    color: #7189a4;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    line-height: 1.8;
+}
+.footer-page { color: var(--muted); margin-bottom: 6px; }
+.footer-text { color: var(--blue); font-weight: 700; }
+
+@media(max-width: 650px) {
+    header { padding: 13px 17px; }
+    .logo { font-size: 13px; }
+    .logo img { width: 34px; height: 34px; }
+    .header-info { display: none; }
+    main { padding: 35px 17px; }
+    .menu { grid-template-columns: 1fr; }
+    .items { grid-template-columns: 1fr; }
+    .lesson { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+    .day-header { padding: 15px 16px; }
+    .week-btn { flex: 1; padding: 11px 8px; font-size: 12px; }
 }
 </style>
 </head>
@@ -149,112 +384,124 @@ footer div { margin-bottom:6px; color:#a4b8ce; }
 <header>
     <div class="logo">
         <img src="https://muffler-kmm.github.io/Shedule/icon-192.png" alt="СКТЭК">
-        <span>РАСПИСАНИЕ ГБПОУ СКТЭК<b>.</b></span>
+        <div>РАСПИСАНИЕ ГБПОУ СКТЭК<span>.</span></div>
     </div>
-    <div class="header-caption">Учебное расписание</div>
+    <div class="header-info">Учебное расписание</div>
 </header>
 
 <main>
-    <section id="home" class="page active">
-        <div class="hero">
-            <div class="eyebrow">Учебный портал</div>
-            <h1>Расписание занятий</h1>
-            <p class="intro">Выберите преподавателя или учебную группу, чтобы посмотреть расписание занятий.</p>
-        </div>
+    <div id="loading" class="loading">Загружаем расписание…</div>
 
-        <div class="search">
-            <span class="search-icon">⌕</span>
-            <input id="search" type="search" placeholder="Поиск преподавателя или группы..." autocomplete="off">
-            <div class="search-results" id="searchResults"></div>
-        </div>
+    <div id="app" hidden>
+        <section id="home" class="page active">
+            <div class="welcome">
+                <div class="subtitle">Учебный портал</div>
+                <h1>Главное меню</h1>
+                <p>Выберите преподавателя или учебную группу, чтобы посмотреть расписание занятий.</p>
+            </div>
 
-        <div style="margin-bottom:30px">
-            <h2>★ Избранное</h2>
-            <div class="items" id="favorites"></div>
-        </div>
+            <div class="search-section">
+                <div class="search-wrap">
+                    <span class="search-icon">⌕</span>
+                    <input class="search-input" id="globalSearch" type="search"
+                        placeholder="Поиск преподавателя или учебной группы..."
+                        autocomplete="off">
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
 
-        <h2>Разделы</h2>
-        <div class="menu">
-            <button class="menu-card" onclick="showPage('teachers')">
-                <div class="menu-icon">♙</div>
-                <h3>Преподаватели</h3>
-                <p>Список преподавателей и их расписание занятий</p>
-            </button>
-            <button class="menu-card" onclick="showPage('groups')">
-                <div class="menu-icon">▦</div>
-                <h3>Учебные группы</h3>
-                <p>Выберите свою группу и посмотрите расписание</p>
-            </button>
-        </div>
-    </section>
+            <div class="favorite-section">
+                <h2 class="section-title"><span>★</span> Избранное</h2>
+                <div class="items" id="favoriteList"></div>
+            </div>
 
-    <section id="teachers" class="page">
-        <button class="back" onclick="showPage('home')">← Главное меню</button>
-        <div class="hero">
-            <div class="eyebrow">Список преподавателей</div>
-            <h1>Преподаватели</h1>
-            <p class="intro">Выберите преподавателя, чтобы открыть его расписание.</p>
-        </div>
-        <div class="items" id="teacherList"></div>
-    </section>
+            <h2 class="section-title">Разделы</h2>
+            <div class="menu">
+                <button class="menu-card" onclick="openPage('teachers')">
+                    <div class="menu-icon">♙</div>
+                    <h3>Преподаватели</h3>
+                    <p>Список преподавателей и их расписание занятий</p>
+                </button>
+                <button class="menu-card" onclick="openPage('groups')">
+                    <div class="menu-icon">▦</div>
+                    <h3>Учебные группы</h3>
+                    <p>Выберите свою группу и посмотрите расписание</p>
+                </button>
+            </div>
+        </section>
 
-    <section id="groups" class="page">
-        <button class="back" onclick="showPage('home')">← Главное меню</button>
-        <div class="hero">
-            <div class="eyebrow">Учебные группы</div>
-            <h1>Группы</h1>
-            <p class="intro">Выберите учебную группу, чтобы посмотреть занятия.</p>
-        </div>
-        <div class="items" id="groupList"></div>
-    </section>
+        <section id="teachers" class="page">
+            <button class="back" onclick="openPage('home')">← Главное меню</button>
+            <div class="welcome">
+                <div class="subtitle">Список преподавателей</div>
+                <h1>Преподаватели</h1>
+                <p>Выберите преподавателя, чтобы открыть его расписание.</p>
+            </div>
+            <div class="items" id="teacherList"></div>
+        </section>
 
-    <section id="schedule" class="page">
-        <button class="back" onclick="showPage(previousPage)">← Назад</button>
-        <div class="schedule-heading">
-            <h1 id="scheduleTitle">Расписание</h1>
-            <button class="star" id="scheduleStar" title="Добавить в избранное">☆</button>
-        </div>
+        <section id="groups" class="page">
+            <button class="back" onclick="openPage('home')">← Главное меню</button>
+            <div class="welcome">
+                <div class="subtitle">Учебные группы</div>
+                <h1>Группы</h1>
+                <p>Выберите учебную группу, чтобы посмотреть занятия.</p>
+            </div>
+            <div class="items" id="groupList"></div>
+        </section>
 
-        <div class="controls">
-            <label for="datePicker">Дата:</label>
-            <input type="date" id="datePicker">
-            <button class="btn" id="todayButton">Сегодня</button>
-        </div>
+        <section id="schedule" class="page">
+            <button class="back" onclick="goBack()">← Назад</button>
+            <div class="schedule-heading">
+                <h1 id="scheduleTitle"></h1>
+                <button class="favorite-btn" id="scheduleFavorite"
+                    aria-label="Добавить в избранное">☆</button>
+            </div>
 
-        <div class="weeks">
-            <button class="btn" id="week1" onclick="switchWeek(1)">Первая неделя</button>
-            <button class="btn" id="week2" onclick="switchWeek(2)">Вторая неделя</button>
-        </div>
+            <div class="schedule-date">
+                <label for="datePicker">Дата:</label>
+                <input type="date" id="datePicker">
+                <button class="week-btn" id="todayButton">Сегодня</button>
+            </div>
 
-        <div class="days" id="days"></div>
-        <p class="note" id="note"></p>
-    </section>
+            <div class="week-switch">
+                <button class="week-btn" id="week1" onclick="switchWeek(1)">Первая неделя</button>
+                <button class="week-btn" id="week2" onclick="switchWeek(2)">Вторая неделя</button>
+            </div>
 
-    <div id="loading" class="loading">Загружаем актуальную базу расписания…</div>
+            <div id="days" class="days"></div>
+            <p class="schedule-note" id="scheduleNote"></p>
+        </section>
+    </div>
 </main>
 
 <footer>
-    <div id="footerPage">Главная</div>
-    © 2026. Учебное расписание ГБПОУ СКТЭК
+    <div class="footer-page" id="footerPage">Главная</div>
+    <div>© 2026. Сайт создан веб-разработчиком
+        <span class="footer-text">Muffler (Картоев М.М.)</span>
+    </div>
 </footer>
 
 <script>
-const SOURCE_URL = "https://muffler-kmm.github.io/Shedule/";
-const TIMES = ["9:00–10:20", "10:30–11:50", "12:30–13:50", "14:00–15:20"];
-const DAY_NAMES = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
+"use strict";
 
-let DATA = null;
+/* Источник действующего расписания */
+const SOURCE_URL = "https://muffler-kmm.github.io/Shedule/";
+
+let DATA;
 let teachers = [];
 let groups = [];
+let times = [];
+
+const dayNames = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница"];
+const pageNames = {
+    home: "Главная",
+    teachers: "Преподаватели",
+    groups: "Учебные группы",
+    schedule: "Расписание"
+};
+
 let favorites = [];
-let selectedName = "";
-let selectedType = "teacher";
-let previousPage = "home";
-let selectedDate = new Date();
-let activeWeek = 1;
-
-selectedDate.setHours(0,0,0,0);
-
 try {
     favorites = JSON.parse(localStorage.getItem("scheduleFavorites") || "[]");
     if (!Array.isArray(favorites)) favorites = [];
@@ -262,344 +509,556 @@ try {
     favorites = [];
 }
 
-const $ = id => document.getElementById(id);
+let previousPage = "teachers";
+let selectedName = "";
+let selectedType = "teacher";
+let selectedDate = new Date();
+selectedDate.setHours(0, 0, 0, 0);
 
-function showPage(id) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    $(id).classList.add("active");
-    $("footerPage").textContent = ({
-        home:"Главная", teachers:"Преподаватели",
-        groups:"Учебные группы", schedule:"Расписание"
-    })[id] || "Расписание";
-    window.scrollTo({top:0, behavior:"smooth"});
+let activeWeek = getWeekNumber(selectedDate);
+let followsToday = true;
+let lastLocalDate = toInputDate(new Date());
+
+/* Загрузка настоящих данных с основного сайта */
+async function loadSchedule() {
+    const loading = document.getElementById("loading");
+
+    try {
+        const response = await fetch(SOURCE_URL + "?v=" + Date.now(), {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Не удалось получить данные расписания.");
+        }
+
+        const html = await response.text();
+
+        const dataMatch = html.match(
+            /const DATA\s*=\s*(\{[\s\S]*?\});\s*const teachers\s*=/
+        );
+
+        const teacherMatch = html.match(
+            /const teachers\s*=\s*(\[[\s\S]*?\]);\s*const groups\s*=/
+        );
+
+        if (!dataMatch || !teacherMatch) {
+            throw new Error("Не удалось найти данные расписания на основном сайте.");
+        }
+
+        DATA = JSON.parse(dataMatch[1]);
+        teachers = JSON.parse(teacherMatch[1]);
+        groups = DATA.groups.map(group => group.name);
+        times = DATA.times;
+
+        if (!DATA.groups || !DATA.times) {
+            throw new Error("Данные расписания имеют неверный формат.");
+        }
+
+        loading.hidden = true;
+        document.getElementById("app").hidden = false;
+
+        renderLists();
+        renderSearch();
+        document.getElementById("datePicker").value = toInputDate(selectedDate);
+
+    } catch (error) {
+        console.error(error);
+        loading.className = "error";
+        loading.innerHTML = `
+            Не удалось загрузить расписание.<br>
+            Проверьте подключение к интернету и попробуйте ещё раз.
+            <br><button class="retry" onclick="location.reload()">Повторить</button>
+        `;
+    }
 }
 
-function getMonday(date) {
-    const d = new Date(date);
-    const day = d.getDay();
-    d.setDate(d.getDate() + (day === 0 ? -6 : 1-day));
-    d.setHours(0,0,0,0);
-    return d;
+/* Навигация */
+function openPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+    document.getElementById("footerPage").textContent =
+        pageNames[pageId] || "Расписание";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function getWeekNumber(date) {
-    const base = new Date(2026,8,7);
-    const monday = getMonday(date);
-    const diff = Math.round((monday-base)/86400000);
-    return ((Math.floor(diff/7)%2+2)%2) === 0 ? 2 : 1;
+function goBack() {
+    openPage(previousPage);
 }
 
-function inputDate(date) {
-    return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
-}
-
-function formatDate(date) {
-    return date.toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
-}
-
-function openSchedule(name,type,from) {
+/* Открытие расписания */
+function openSchedule(name, type, sourcePage) {
+    previousPage = sourcePage;
     selectedName = name;
     selectedType = type;
-    previousPage = from;
+
     activeWeek = getWeekNumber(selectedDate);
-    $("scheduleTitle").textContent = name;
-    $("datePicker").value = inputDate(selectedDate);
-    updateScheduleStar();
+
+    document.getElementById("scheduleTitle").textContent = name;
+    updateScheduleFavorite();
     renderSchedule();
-    showPage("schedule");
+    openPage("schedule");
 }
 
+/* Избранное */
 function saveFavorites() {
-    localStorage.setItem("scheduleFavorites",JSON.stringify(favorites));
+    localStorage.setItem("scheduleFavorites", JSON.stringify(favorites));
 }
 
-function isFavorite(name,type) {
-    return favorites.some(x => x.id === type+":"+name);
+function isFavorite(name, type) {
+    return favorites.some(item => item.id === type + ":" + name);
 }
 
-function toggleFavorite(name,type) {
-    const id = type+":"+name;
-    const index = favorites.findIndex(x => x.id === id);
-    if (index < 0) favorites.push({id,name,type});
-    else favorites.splice(index,1);
+function toggleFavorite(name, type) {
+    const id = type + ":" + name;
+    const index = favorites.findIndex(item => item.id === id);
+
+    if (index === -1) {
+        favorites.push({ id, name, type });
+    } else {
+        favorites.splice(index, 1);
+    }
+
     saveFavorites();
     renderLists();
-    updateScheduleStar();
+    updateScheduleFavorite();
 }
 
-function updateScheduleStar() {
-    const active = isFavorite(selectedName,selectedType);
-    $("scheduleStar").textContent = active ? "★" : "☆";
-    $("scheduleStar").classList.toggle("selected",active);
+function updateScheduleFavorite() {
+    const button = document.getElementById("scheduleFavorite");
+    if (!button || !selectedName) return;
+
+    const selected = isFavorite(selectedName, selectedType);
+    button.classList.toggle("selected", selected);
+    button.textContent = selected ? "★" : "☆";
+    button.title = selected ? "Убрать из избранного" : "Добавить в избранное";
 }
 
-function makeItem(name,type,from) {
+/* Карточки преподавателей и групп */
+function createItem(name, type, sourcePage) {
     const card = document.createElement("div");
     card.className = "item";
 
     const info = document.createElement("div");
     info.className = "item-info";
+
     const title = document.createElement("h3");
     title.textContent = name;
+
+    if (type === "teacher" &&
+        name.replace(/\s/g, "") === "КартоевМ.М.") {
+
+        const badge = document.createElement("span");
+        badge.className = "developer";
+        badge.textContent = "⌘ РАЗРАБОТЧИК";
+        title.appendChild(badge);
+    }
+
     const description = document.createElement("p");
     description.textContent = "Посмотреть расписание →";
-    info.append(title,description);
-    info.onclick = () => openSchedule(name,type,from);
+
+    info.append(title, description);
+    info.onclick = () => openSchedule(name, type, sourcePage);
 
     const star = document.createElement("button");
     star.className = "star";
-    const update = () => {
-        const active = isFavorite(name,type);
-        star.textContent = active ? "★" : "☆";
-        star.classList.toggle("selected",active);
-    };
-    update();
-    star.onclick = () => toggleFavorite(name,type);
+    star.setAttribute("aria-label", "Добавить в избранное");
 
-    card.append(info,star);
+    function updateStar() {
+        const selected = isFavorite(name, type);
+        star.classList.toggle("selected", selected);
+        star.textContent = selected ? "★" : "☆";
+        star.title = selected ? "Убрать из избранного" : "Добавить в избранное";
+    }
+
+    updateStar();
+    star.onclick = () => toggleFavorite(name, type);
+
+    card.append(info, star);
     return card;
 }
 
 function renderLists() {
-    $("teacherList").replaceChildren();
-    $("groupList").replaceChildren();
-    $("favorites").replaceChildren();
+    const teacherList = document.getElementById("teacherList");
+    const groupList = document.getElementById("groupList");
+    const favoriteList = document.getElementById("favoriteList");
 
-    teachers.forEach(name => $("teacherList").append(makeItem(name,"teacher","teachers")));
-    groups.forEach(name => $("groupList").append(makeItem(name,"group","groups")));
+    teacherList.innerHTML = "";
+    groupList.innerHTML = "";
+    favoriteList.innerHTML = "";
+
+    teachers.forEach(name => {
+        teacherList.appendChild(createItem(name, "teacher", "teachers"));
+    });
+
+    groups.forEach(name => {
+        groupList.appendChild(createItem(name, "group", "groups"));
+    });
 
     if (!favorites.length) {
-        $("favorites").innerHTML = '<p class="empty">Здесь появятся выбранные преподаватели и группы.</p>';
-    } else {
-        favorites.forEach(item => $("favorites").append(makeItem(item.name,item.type,"home")));
+        favoriteList.innerHTML =
+            '<p class="empty">Здесь появятся выбранные преподаватели и группы.</p>';
+        return;
     }
+
+    favorites.forEach(item => {
+        favoriteList.appendChild(createItem(item.name, item.type, "home"));
+    });
 }
 
-function normalize(value) {
-    return value.toLocaleLowerCase("ru-RU").replace(/ё/g,"е").trim();
+/* Поиск */
+function normalizeSearch(value) {
+    return value.toLocaleLowerCase("ru-RU").replace(/ё/g, "е").trim();
 }
 
 function renderSearch() {
-    const query = normalize($("search").value);
-    const results = $("searchResults");
-    results.replaceChildren();
+    const input = document.getElementById("globalSearch");
+    const results = document.getElementById("searchResults");
+
+    if (!input || !results) return;
+
+    const query = normalizeSearch(input.value);
+    results.innerHTML = "";
+
     if (!query) return;
 
     const matches = [
-        ...teachers.map(name => ({name,type:"teacher",label:"Преподаватель",page:"teachers"})),
-        ...groups.map(name => ({name,type:"group",label:"Учебная группа",page:"groups"}))
-    ].filter(x => normalize(x.name).includes(query)).slice(0,12);
+        ...teachers.map(name => ({
+            name, type: "teacher", label: "Преподаватель", page: "teachers"
+        })),
+        ...groups.map(name => ({
+            name, type: "group", label: "Учебная группа", page: "groups"
+        }))
+    ].filter(item => normalizeSearch(item.name).includes(query)).slice(0, 12);
 
     if (!matches.length) {
-        const empty = document.createElement("p");
-        empty.className = "empty";
-        empty.textContent = "Ничего не найдено.";
-        results.append(empty);
+        const empty = document.createElement("div");
+        empty.className = "search-empty";
+        empty.textContent = "Ничего не найдено. Проверьте запрос.";
+        results.appendChild(empty);
         return;
     }
 
     matches.forEach(item => {
         const button = document.createElement("button");
+        button.type = "button";
         button.className = "search-result";
+
         const name = document.createElement("strong");
         name.textContent = item.name;
+
         const label = document.createElement("span");
         label.textContent = item.label;
-        button.append(name,label);
-        button.onclick = () => {
-            $("search").value = "";
-            results.replaceChildren();
-            openSchedule(item.name,item.type,item.page);
-        };
-        results.append(button);
-    });
-}
 
-function groupLessons(name,week,day) {
-    const group = DATA.groups.find(x => x.name === name);
-    if (!group) return [];
-    const lessons = group.weeks[week-1]?.[day-1] || [];
-    return lessons.map((lesson,index) => lesson ? ({
-        time:TIMES[index], group:name,
-        subject:lesson.subject, teacher:lesson.teacher
-    }) : null).filter(Boolean);
-}
+        button.append(name, label);
 
-function teacherLessons(name,week,day) {
-    if (name.toLocaleLowerCase("ru-RU").includes("ваканс")) return [];
-
-    if (name === "Картоев М. М.") {
-        return (DATA.kartoev[week-1]?.[day-1] || []).map((lesson,index) => ({
-            time:TIMES[index], group:lesson[0],
-            subject:lesson[1], teacher:name
-        }));
-    }
-
-    const result = [];
-    DATA.groups.forEach(group => {
-        groupLessons(group.name,week,day).forEach(lesson => {
-            if (lesson.teacher === name) result.push(lesson);
+        button.addEventListener("click", () => {
+            input.value = "";
+            results.innerHTML = "";
+            openSchedule(item.name, item.type, item.page);
         });
+
+        results.appendChild(button);
     });
+}
+
+/* Даты и учебные недели */
+function getMonday(date) {
+    const result = new Date(date);
+    const day = result.getDay();
+    const difference = day === 0 ? -6 : 1 - day;
+
+    result.setDate(result.getDate() + difference);
+    result.setHours(0, 0, 0, 0);
     return result;
 }
 
-function isCurrentLesson(time,date) {
-    const now = new Date();
-    if (inputDate(date) !== inputDate(now)) return false;
-    const [start,end] = time.split("–");
-    const minutes = value => {
-        const [h,m] = value.trim().split(":").map(Number);
-        return h*60+m;
-    };
-    const current = now.getHours()*60+now.getMinutes();
-    return current >= minutes(start) && current < minutes(end);
+function getWeekNumber(date) {
+    const baseMonday = new Date(2026, 8, 7);
+    const currentMonday = getMonday(date);
+    const difference = Math.round((currentMonday - baseMonday) / 86400000);
+    const weekIndex = Math.floor(difference / 7);
+
+    return ((weekIndex % 2 + 2) % 2) === 0 ? 2 : 1;
 }
 
-function renderSchedule() {
-    $("week1").classList.toggle("active",activeWeek===1);
-    $("week2").classList.toggle("active",activeWeek===2);
-    $("days").replaceChildren();
+function formatDate(date) {
+    return date.toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
 
-    const monday = getMonday(selectedDate);
-
-    for (let i=0; i<5; i++) {
-        const date = new Date(monday);
-        date.setDate(monday.getDate()+i);
-
-        const card = document.createElement("article");
-        card.className = "day";
-        if (inputDate(date) === inputDate(selectedDate)) card.classList.add("today");
-
-        const head = document.createElement("div");
-        head.className = "day-head";
-        const dayName = document.createElement("h3");
-        dayName.textContent = DAY_NAMES[i];
-        const dayDate = document.createElement("span");
-        dayDate.textContent = formatDate(date);
-        head.append(dayName,dayDate);
-        card.append(head);
-
-        const lessons = selectedType === "teacher"
-            ? teacherLessons(selectedName,activeWeek,i+1)
-            : groupLessons(selectedName,activeWeek,i+1);
-
-        lessons.sort((a,b) => TIMES.indexOf(a.time)-TIMES.indexOf(b.time));
-
-        if (!lessons.length) {
-            const empty = document.createElement("div");
-            empty.className = "empty";
-            empty.textContent = "Занятий нет";
-            card.append(empty);
-        }
-
-        lessons.forEach(lesson => {
-            const row = document.createElement("div");
-            row.className = "lesson";
-
-            const time = document.createElement("div");
-            time.className = "lesson-time";
-            time.textContent = `${TIMES.indexOf(lesson.time)+1}-я пара · ${lesson.time}`;
-
-            const details = document.createElement("div");
-            const main = document.createElement("div");
-            main.className = "lesson-main";
-            main.textContent = selectedType === "teacher" ? lesson.group : lesson.subject;
-
-            const subject = document.createElement("div");
-            subject.className = "lesson-sub";
-            subject.textContent = selectedType === "teacher"
-                ? lesson.subject : `Группа: ${lesson.group}`;
-
-            details.append(main,subject);
-
-            if (isCurrentLesson(lesson.time,date)) {
-                const status = document.createElement("div");
-                status.className = "status";
-                status.textContent = "Сейчас идёт";
-                details.append(status);
-            }
-
-            if (selectedType === "group") {
-                const teacher = document.createElement("div");
-                teacher.className = "lesson-teacher";
-                teacher.textContent = "Преподаватель: " + (lesson.teacher || "Не указан");
-                details.append(teacher);
-            }
-
-            row.append(time,details);
-            card.append(row);
-        });
-
-        $("days").append(card);
-    }
-
-    $("note").textContent = selectedType === "group"
-        ? "Показаны предметы и преподаватели выбранной учебной группы."
-        : "Показаны занятия преподавателя и соответствующие учебные группы.";
+function toInputDate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 function switchWeek(number) {
     if (number !== activeWeek) {
-        selectedDate.setDate(selectedDate.getDate() + (number===2 ? 7 : -7));
+        const shift = number === 2 ? 7 : -7;
+        selectedDate.setDate(selectedDate.getDate() + shift);
     }
+
     activeWeek = number;
-    $("datePicker").value = inputDate(selectedDate);
+    document.getElementById("datePicker").value = toInputDate(selectedDate);
     renderSchedule();
 }
 
-$("datePicker").addEventListener("change",event => {
-    if (!event.target.value) return;
-    const [y,m,d] = event.target.value.split("-").map(Number);
-    selectedDate = new Date(y,m-1,d);
+document.getElementById("datePicker").addEventListener("change", function() {
+    if (!this.value) return;
+
+    followsToday = false;
+
+    const [year, month, day] = this.value.split("-").map(Number);
+    selectedDate = new Date(year, month - 1, day);
     activeWeek = getWeekNumber(selectedDate);
+
     renderSchedule();
 });
 
-$("todayButton").onclick = () => {
-    selectedDate = new Date();
-    selectedDate.setHours(0,0,0,0);
+function setToday() {
+    followsToday = true;
+
+    const today = new Date();
+    lastLocalDate = toInputDate(today);
+
+    selectedDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
     activeWeek = getWeekNumber(selectedDate);
-    $("datePicker").value = inputDate(selectedDate);
-    renderSchedule();
-};
+    document.getElementById("datePicker").value = lastLocalDate;
 
-$("scheduleStar").onclick = () => toggleFavorite(selectedName,selectedType);
-$("search").addEventListener("input",renderSearch);
-
-async function loadSchedule() {
-    try {
-        const response = await fetch(SOURCE_URL + "?v=" + Date.now(), {cache:"no-store"});
-        if (!response.ok) throw new Error("Не удалось открыть исходный сайт.");
-        const html = await response.text();
-
-        const match = html.match(/const DATA\s*=\s*(\{[\s\S]*?\});\s*const teachers\s*=/);
-        if (!match) throw new Error("Не удалось найти базу расписания в исходном файле.");
-
-        DATA = JSON.parse(match[1]);
-
-        const teacherMatch = html.match(/const teachers\s*=\s*(\[[\s\S]*?\]);\s*const groups\s*=/);
-        if (teacherMatch) teachers = JSON.parse(teacherMatch[1]);
-        else {
-            teachers = [...new Set(DATA.groups.flatMap(group =>
-                group.weeks.flat(2).filter(Boolean).map(lesson => lesson.teacher)
-            ))].filter(Boolean).sort((a,b)=>a.localeCompare(b,"ru"));
-        }
-
-        groups = DATA.groups.map(group => group.name);
-
-        $("loading").style.display = "none";
-        renderLists();
-        $("datePicker").value = inputDate(selectedDate);
-    } catch(error) {
-        $("loading").classList.add("error");
-        $("loading").textContent =
-            "Не удалось загрузить расписание. Проверь подключение к интернету и доступность основного сайта. Подробности: " + error.message;
-        console.error(error);
+    if (document.getElementById("schedule").classList.contains("active")) {
+        renderSchedule();
     }
 }
 
+document.getElementById("todayButton").addEventListener("click", setToday);
+
+/* Обновление выбранной даты при смене суток */
+function refreshTodayIfNeeded() {
+    const today = new Date();
+    const todayKey = toInputDate(today);
+
+    if (todayKey === lastLocalDate) return;
+
+    lastLocalDate = todayKey;
+    if (!followsToday) return;
+
+    selectedDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
+    activeWeek = getWeekNumber(selectedDate);
+
+    const picker = document.getElementById("datePicker");
+    if (picker) picker.value = todayKey;
+
+    if (document.getElementById("schedule").classList.contains("active")) {
+        renderSchedule();
+    }
+}
+
+/* Получение занятий */
+function getGroupLessons(groupName, week, day) {
+    const group = DATA.groups.find(item => item.name === groupName);
+    if (!group) return [];
+
+    const dayLessons = group.weeks[week - 1]?.[day - 1] || [];
+
+    return dayLessons.map((lesson, index) => lesson ? {
+        time: times[index],
+        group: groupName,
+        subject: lesson.subject,
+        teacher: lesson.teacher
+    } : null).filter(Boolean);
+}
+
+function getTeacherLessons(teacherName, week, day) {
+    if (teacherName.toLocaleLowerCase("ru-RU").includes("ваканс")) {
+        return [];
+    }
+
+    if (teacherName.replace(/\s/g, "") === "КартоевМ.М.") {
+        return (DATA.kartoev[week - 1]?.[day - 1] || []).map(lesson => ({
+            time: times[times.indexOf(lesson.time)] || "",
+            group: lesson[0],
+            subject: lesson[1],
+            teacher: teacherName
+        })).filter(lesson => lesson.time);
+    }
+
+    const result = [];
+
+    for (const group of DATA.groups) {
+        for (const lesson of getGroupLessons(group.name, week, day)) {
+            if (lesson.teacher === teacherName) result.push(lesson);
+        }
+    }
+
+    return result;
+}
+
+function getFilteredLessons(week, day) {
+    const result = selectedType === "teacher"
+        ? getTeacherLessons(selectedName, week, day)
+        : getGroupLessons(selectedName, week, day);
+
+    return result.sort((a, b) => times.indexOf(a.time) - times.indexOf(b.time));
+}
+
+/* Проверка текущей пары */
+function isCurrentLesson(time, date) {
+    const today = new Date();
+
+    if (
+        date.getDate() !== today.getDate() ||
+        date.getMonth() !== today.getMonth() ||
+        date.getFullYear() !== today.getFullYear()
+    ) {
+        return false;
+    }
+
+    const [start, end] = time.split("–");
+
+    function toMinutes(value) {
+        const [hours, minutes] = value.trim().split(":").map(Number);
+        return hours * 60 + minutes;
+    }
+
+    const now = today.getHours() * 60 + today.getMinutes();
+
+    return now >= toMinutes(start) && now < toMinutes(end);
+}
+
+/* Отображение расписания */
+function renderSchedule() {
+    document.getElementById("week1").classList.toggle("active", activeWeek === 1);
+    document.getElementById("week2").classList.toggle("active", activeWeek === 2);
+
+    const daysContainer = document.getElementById("days");
+    const note = document.getElementById("scheduleNote");
+
+    daysContainer.innerHTML = "";
+
+    const monday = getMonday(selectedDate);
+
+    for (let i = 0; i < 5; i++) {
+        const currentDate = new Date(monday);
+        currentDate.setDate(monday.getDate() + i);
+
+        const dayCard = document.createElement("div");
+        dayCard.className = "day-card";
+
+        if (
+            currentDate.getDate() === selectedDate.getDate() &&
+            currentDate.getMonth() === selectedDate.getMonth() &&
+            currentDate.getFullYear() === selectedDate.getFullYear()
+        ) {
+            dayCard.classList.add("selected-day");
+        }
+
+        const dayHeader = document.createElement("div");
+        dayHeader.className = "day-header";
+
+        const dayTitle = document.createElement("h3");
+        dayTitle.textContent = dayNames[i];
+
+        const dayDate = document.createElement("span");
+        dayDate.textContent = formatDate(currentDate);
+
+        dayHeader.append(dayTitle, dayDate);
+        dayCard.appendChild(dayHeader);
+
+        const dayLessons = getFilteredLessons(activeWeek, i + 1);
+
+        if (!dayLessons.length) {
+            const empty = document.createElement("div");
+            empty.className = "no-lessons";
+            empty.textContent = "Занятий нет";
+            dayCard.appendChild(empty);
+        } else {
+            dayLessons.forEach(lesson => {
+                const lessonCard = document.createElement("div");
+                lessonCard.className = "lesson";
+
+                const current = isCurrentLesson(lesson.time, currentDate);
+
+                const time = document.createElement("div");
+                time.className = "lesson-time";
+                time.textContent =
+                    `${times.indexOf(lesson.time) + 1}-я пара · ${lesson.time}`;
+
+                const details = document.createElement("div");
+
+                const mainInfo = document.createElement("div");
+                mainInfo.className = "lesson-group";
+                mainInfo.textContent = selectedType === "teacher"
+                    ? lesson.group
+                    : lesson.subject;
+
+                const subject = document.createElement("div");
+                subject.className = "lesson-subject";
+                subject.textContent = selectedType === "teacher"
+                    ? lesson.subject
+                    : `Группа: ${lesson.group}`;
+
+                details.append(mainInfo, subject);
+
+                if (current) {
+                    const status = document.createElement("div");
+                    status.className = "lesson-status";
+                    status.textContent = "Сейчас идёт";
+                    details.appendChild(status);
+                }
+
+                if (selectedType === "group") {
+                    const teacher = document.createElement("div");
+                    teacher.className = "lesson-teacher";
+
+                    teacher.textContent =
+                        lesson.teacher &&
+                        lesson.teacher.toLocaleLowerCase("ru-RU").includes("ваканс")
+                            ? "Преподаватель: Вакансия ин. яз"
+                            : `Преподаватель: ${lesson.teacher || "Не указан"}`;
+
+                    details.appendChild(teacher);
+                }
+
+                lessonCard.append(time, details);
+                dayCard.appendChild(lessonCard);
+            });
+        }
+
+        daysContainer.appendChild(dayCard);
+    }
+
+    note.textContent = selectedType === "group"
+        ? "В расписании группы показаны предметы и преподаватели согласно загруженному расписанию."
+        : "В расписании преподавателя показаны его занятия и соответствующие учебные группы.";
+}
+
+/* Запуск */
+document.getElementById("globalSearch").addEventListener("input", renderSearch);
+
+document.getElementById("scheduleFavorite").addEventListener("click", () => {
+    if (selectedName) toggleFavorite(selectedName, selectedType);
+});
+
+document.getElementById("datePicker").value = toInputDate(selectedDate);
+
 loadSchedule();
+setInterval(refreshTodayIfNeeded, 30000);
 </script>
 </body>
 </html>
