@@ -209,7 +209,33 @@ document.getElementById("datePicker").addEventListener("change",function(){
     selectedDate=new Date(year,month-1,day);
     activeWeek=getWeekNumber(selectedDate);
     renderSchedule();
-function openSchedule(name,type,sourcePage){selectedName=name;selectedType=type;previousPage=sourcePage;activeWeek=getWeekNumber(selectedDate);document.getElementById("scheduleTitle").textContent=name;document.getElementById("datePicker").value=toInputDate(selectedDate);openPage("schedule");updateScheduleFavorite();renderSchedule();}
+function refreshTodayIfNeeded(){
+    const today = new Date();
+    const todayKey = toInputDate(today);
+
+    if(todayKey === lastLocalDate)return;
+
+    lastLocalDate = todayKey;
+
+    if(!followsToday)return;
+
+    selectedDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
+    activeWeek = getWeekNumber(selectedDate);
+
+    const picker = document.getElementById("datePicker");
+    if(picker)picker.value = todayKey;
+
+    const schedulePage = document.getElementById("schedule");
+
+    if(schedulePage && schedulePage.classList.contains("active")){
+        renderSchedule();
+    }
+}
 function getGroupLessons(groupName,week,day){const group=DATA.groups.find(item=>item.name===groupName);if(!group)return [];const dayLessons=group.weeks[week-1]?.[day-1]||[];return dayLessons.map((lesson,index)=>lesson?{time:times[index],group:groupName,subject:lesson.subject,teacher:lesson.teacher}:null).filter(Boolean);}
 function getTeacherLessons(teacherName,week,day){if(teacherName.toLocaleLowerCase('ru-RU').includes('ваканс'))return [];if(teacherName==="Картоев М. М."){return (DATA.kartoev[week-1]?.[day-1]||[]).map((lesson,index)=>({time:times[index],group:lesson[0],subject:lesson[1],teacher:teacherName}));}const result=[];for(const group of DATA.groups){for(const lesson of getGroupLessons(group.name,week,day)){if(lesson.teacher===teacherName)result.push(lesson);}}return result;}
 function getFilteredLessons(week,day){const result=selectedType==="teacher"?getTeacherLessons(selectedName,week,day):getGroupLessons(selectedName,week,day);return result.sort((a,b)=>times.indexOf(a.time)-times.indexOf(b.time));}
