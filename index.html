@@ -176,7 +176,9 @@ const times = DATA.times;
 let favorites = [];
 try { favorites = JSON.parse(localStorage.getItem("scheduleFavorites") || "[]"); if (!Array.isArray(favorites)) favorites = []; } catch { favorites = []; }
 let previousPage = "teachers", selectedName = "", selectedType = "teacher";
-let selectedDate = new Date(2026, 10, 10), activeWeek = 1;
+let selectedDate = new Date();
+selectedDate.setHours(0, 0, 0, 0);
+let activeWeek = 1;
 const pageNames = {home:"Главная",teachers:"Преподаватели",groups:"Учебные группы",schedule:"Расписание"};
 function openPage(pageId) { document.querySelectorAll(".page").forEach(page=>page.classList.remove("active")); document.getElementById(pageId).classList.add("active"); document.getElementById("footerPage").textContent=pageNames[pageId]||"Расписание"; window.scrollTo({top:0,behavior:"smooth"}); }
 function goBack(){openPage(previousPage);}
