@@ -214,31 +214,20 @@ function getWeekNumber(date){const baseMonday=new Date(2026,8,7),currentMonday=g
 function formatDate(date){return date.toLocaleDateString("ru-RU",{day:"numeric",month:"long",year:"numeric"});}
 function toInputDate(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;}
 function switchWeek(number){if(number!==activeWeek){const shift=number===2?7:-7;selectedDate.setDate(selectedDate.getDate()+shift);}activeWeek=number;document.getElementById("datePicker").value=toInputDate(selectedDate);renderSchedule();}
-document.getElementById("datePicker").addEventListener("change",function(){
-    if(!this.value)return;
+
+document.getElementById("datePicker").addEventListener("change", function() {
+    if (!this.value) return;
+
     followsToday = false;
-    const [year,month,day]=this.value.split("-").map(Number);
-    selectedDate=new Date(year,month-1,day);
-    activeWeek=getWeekNumber(selectedDate);
+
+    const [year, month, day] = this.value.split("-").map(Number);
+    selectedDate = new Date(year, month - 1, day);
+
+    activeWeek = getWeekNumber(selectedDate);
     renderSchedule();
 });
-document.getElementById("todayButton").addEventListener("click", setToday);
-function refreshTodayIfNeeded(){
-    const today = new Date();
-    const todayKey = toInputDate(today);
 
-    if(todayKey === lastLocalDate)return;
-
-    lastLocalDate = todayKey;
-
-    if(!followsToday)return;
-
-    selectedDate = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-    );
-    function setToday() {
+function setToday() {
     followsToday = true;
 
     const today = new Date();
@@ -260,14 +249,33 @@ function refreshTodayIfNeeded(){
         renderSchedule();
     }
 }
+
+document.getElementById("todayButton").addEventListener("click", setToday);
+
+function refreshTodayIfNeeded() {
+    const today = new Date();
+    const todayKey = toInputDate(today);
+
+    if (todayKey === lastLocalDate) return;
+
+    lastLocalDate = todayKey;
+
+    if (!followsToday) return;
+
+    selectedDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+
     activeWeek = getWeekNumber(selectedDate);
 
     const picker = document.getElementById("datePicker");
-    if(picker)picker.value = todayKey;
+    if (picker) picker.value = todayKey;
 
     const schedulePage = document.getElementById("schedule");
 
-    if(schedulePage && schedulePage.classList.contains("active")){
+    if (schedulePage && schedulePage.classList.contains("active")) {
         renderSchedule();
     }
 }
