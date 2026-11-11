@@ -183,6 +183,8 @@ let previousPage = "teachers", selectedName = "", selectedType = "teacher";
 let selectedDate = new Date();
 selectedDate.setHours(0, 0, 0, 0);
 let activeWeek = 1;
+let followsToday = true;
+let lastLocalDate = toInputDate(new Date());
 const pageNames = {home:"Главная",teachers:"Преподаватели",groups:"Учебные группы",schedule:"Расписание"};
 function openPage(pageId) { document.querySelectorAll(".page").forEach(page=>page.classList.remove("active")); document.getElementById(pageId).classList.add("active"); document.getElementById("footerPage").textContent=pageNames[pageId]||"Расписание"; window.scrollTo({top:0,behavior:"smooth"}); }
 function goBack(){openPage(previousPage);}
@@ -200,7 +202,13 @@ function getWeekNumber(date){const baseMonday=new Date(2026,8,7),currentMonday=g
 function formatDate(date){return date.toLocaleDateString("ru-RU",{day:"numeric",month:"long",year:"numeric"});}
 function toInputDate(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;}
 function switchWeek(number){if(number!==activeWeek){const shift=number===2?7:-7;selectedDate.setDate(selectedDate.getDate()+shift);}activeWeek=number;document.getElementById("datePicker").value=toInputDate(selectedDate);renderSchedule();}
-document.getElementById("datePicker").addEventListener("change",function(){if(!this.value)return;const [year,month,day]=this.value.split("-").map(Number);selectedDate=new Date(year,month-1,day);activeWeek=getWeekNumber(selectedDate);renderSchedule();});
+document.getElementById("datePicker").addEventListener("change",function(){
+    if(!this.value)return;
+    followsToday = false;
+    const [year,month,day]=this.value.split("-").map(Number);
+    selectedDate=new Date(year,month-1,day);
+    activeWeek=getWeekNumber(selectedDate);
+    renderSchedule();
 function openSchedule(name,type,sourcePage){selectedName=name;selectedType=type;previousPage=sourcePage;activeWeek=getWeekNumber(selectedDate);document.getElementById("scheduleTitle").textContent=name;document.getElementById("datePicker").value=toInputDate(selectedDate);openPage("schedule");updateScheduleFavorite();renderSchedule();}
 function getGroupLessons(groupName,week,day){const group=DATA.groups.find(item=>item.name===groupName);if(!group)return [];const dayLessons=group.weeks[week-1]?.[day-1]||[];return dayLessons.map((lesson,index)=>lesson?{time:times[index],group:groupName,subject:lesson.subject,teacher:lesson.teacher}:null).filter(Boolean);}
 function getTeacherLessons(teacherName,week,day){if(teacherName.toLocaleLowerCase('ru-RU').includes('ваканс'))return [];if(teacherName==="Картоев М. М."){return (DATA.kartoev[week-1]?.[day-1]||[]).map((lesson,index)=>({time:times[index],group:lesson[0],subject:lesson[1],teacher:teacherName}));}const result=[];for(const group of DATA.groups){for(const lesson of getGroupLessons(group.name,week,day)){if(lesson.teacher===teacherName)result.push(lesson);}}return result;}
