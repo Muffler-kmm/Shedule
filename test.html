@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="manifest" href="/Shedule/manifest.json">
+<link rel="apple-touch-icon"
+      href="/Shedule/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable"
+      content="yes">
+<meta name="apple-mobile-web-app-title"
+      content="СКТЭК">
+<meta name="theme-color" content="#071426">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="/Shedule/favicon-32.png">
+<title>Расписание | Учебный портал</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="logo">РАСПИСАНИЕ ГБПОУ СКТЭК<span>.</span></div>
+    <div class="header-info">Учебное расписание</div>
+</header>
+<main>
+<section id="home" class="page active">
+    <div class="welcome">
+        <div class="subtitle">Учебный портал</div>
+        <h1>Главное меню</h1>
+        <p>Выберите преподавателя или учебную группу, чтобы посмотреть расписание занятий.</p>
+    </div>
+    <div class="search-section">
+        <div class="search-wrap"><span class="search-icon">⌕</span><input class="search-input" id="globalSearch" type="search" placeholder="Поиск преподавателя или учебной группы..." autocomplete="off" aria-label="Поиск преподавателя или учебной группы"></div>
+        <div class="search-results" id="searchResults" aria-live="polite"></div>
+    </div>
+      <div class="favorite-section"><h2 class="section-title"><span>★</span> Избранное</h2><div class="items" id="favoriteList"></div></div>
+    <h2 class="section-title">Разделы</h2>
+    <div class="menu">
+        <button class="menu-card" onclick="openPage('teachers')"><div class="menu-icon">♙</div><h3>Преподаватели</h3><p>Список преподавателей и их расписание занятий</p></button>
+        <button class="menu-card" onclick="openPage('groups')"><div class="menu-icon">▦</div><h3>Учебные группы</h3><p>Выберите свою группу и посмотрите расписание</p></button>
+    </div>
+</section>
+<section id="teachers" class="page">
+    <button class="back" onclick="openPage('home')">← Главное меню</button>
+    <div class="welcome"><div class="subtitle">Список преподавателей</div><h1>Преподаватели</h1><p>Выберите преподавателя, чтобы открыть его расписание.</p></div>
+    <div class="items" id="teacherList"></div>
+</section>
+<section id="groups" class="page">
+    <button class="back" onclick="openPage('home')">← Главное меню</button>
+    <div class="welcome"><div class="subtitle">Учебные группы</div><h1>Группы</h1><p>Выберите учебную группу, чтобы посмотреть занятия.</p></div>
+    <div class="items" id="groupList"></div>
+</section>
+<section id="schedule" class="page">
+    <button class="back" onclick="goBack()">← Назад</button>
+    <div class="schedule-heading"><h1 id="scheduleTitle"></h1><button type="button" class="favorite-btn" id="scheduleFavorite" aria-label="Добавить в избранное" title="Добавить в избранное">☆</button></div>
+  <div class="schedule-date">
+    <label for="datePicker">Дата:</label>
+    <input type="date" id="datePicker">
+    <button type="button" class="week-btn" id="todayButton">Сегодня</button>
+  </div>
+    <div class="week-switch"><button class="week-btn" id="week1" onclick="switchWeek(1)">Первая неделя</button><button class="week-btn" id="week2" onclick="switchWeek(2)">Вторая неделя</button></div>
+    <div id="days" class="days"></div><p class="schedule-note" id="scheduleNote"></p>
+</section>
+</main>
+<footer><div class="footer-page" id="footerPage">Главная</div><div>© 2026. Сайт создан веб-разработчиком Muffler.(Картоев М.М.) <br> Все права защищены.</div></footer>
+<script src="main.js"></script>
+</body>
+</html>
